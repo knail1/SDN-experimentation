@@ -1,0 +1,66 @@
+video slicing rules:
+
+sw1
+	1-3 80	3
+	1-4 80	3
+	1-3 0	2
+	1-4 0 	2
+
+	2-3 80	3
+	2-4 80	3
+	2-3 0	2
+	2-4 0	2
+
+	in port 1, d host h1	, out port 3
+	in port 1, d host h2	, out port 4
+
+	in port 2, d host h1	, out port 3
+	in port 2, d host h2	, out port 4
+
+	OR last 4 rules are:
+	d host h1, out port 3
+	d host h2, out port 4
+
+
+sw2
+
+	in port 1, out port 2
+	in port 2, out port 1
+
+
+sw3
+	in port 1, out port 2
+	in port 2, out port 1
+
+
+
+sw4
+	3-1 80	3
+	3-2 80	3
+	3-1 0	2
+	3-2 0 	2
+
+	4-1 80	3
+	4-2 80	3
+	4-1 0	2
+	4-2 0 	2
+
+	d host h3, out port 3
+	d host h4, out port 4
+
+
+----notes
+
+https://piazza.com/class/ia0ls6utsea535?cid=535
+
+
+To access tcp part of the packet, you shall use find method:
+
+tcpp = packet.find("tcp").dstport
+
+
+A hint is to call the instal_fwdrule to install forwarding rules if the packet comes from a dedicated switch in a dedicated port. Some steps may be:
+
+1. Create a tuple with fields: dpid, MAC source, MAC dest, tcp's port
+2. Check if it matches to any index in self.portmap
+3. If yes, get the next dpid from the self.portmap. Then install forwarding rules from current dpid to next dpid

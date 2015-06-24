@@ -1,0 +1,35 @@
+Tree topology with defined depth and fan-out.
+ sudo mn --topo tree,depth=3,fanout=2
+
+
+hostFanOut=k
+switchFanOut=k
+iterate on k
+	first create core switch c1
+		iterate on switchFanOut (asfo) #agg switches get created here
+		create agg switch a + %’asfo’
+			iterate on switchFanOut (esfo)
+			create edge switch e + %’esfo’ #edge switches get created here
+				iterate on hostFanOut (hfo)
+				create host h + %'hfo'
+			    addlink between edge switch %sfo and each h % hfo , pass the dict linkopts3
+			addLink between agg switch a % asfo and edge switch e % esfo , pass the dict linkopts2
+		addlink between c1 and agg switch a % asfo , pass the dict linkopts1
+
+
+
+asfo    esfo    esfo
+1       1       2
+2       3       4
+
+
+
+asfo + esfo
+
+
+fanout of 3
+
+
+1       1   2   3
+2       4   5   6
+3       7   8   9
